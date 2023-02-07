@@ -14,4 +14,37 @@
       <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
     </Filter>
   </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="main.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Source.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <Text Include="pwd.txt">
+      <Filter>Source Files</Filter>
+    </Text>
+    <Text Include="pws.txt">
+      <Filter>Source Files</Filter>
+    </Text>
+    <Text Include="pwc.txt">
+      <Filter>Source Files</Filter>
+    </Text>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="appointments.csv">
+      <Filter>Source Files</Filter>
+    </None>
+    <None Include="dr_abc.csv">
+      <Filter>Source Files</Filter>
+    </None>
+    <None Include="dr_xyz.csv">
+      <Filter>Source Files</Filter>
+    </None>
+    <None Include="dr_aaa.csv">
+      <Filter>Source Files</Filter>
+    </None>
+  </ItemGroup>
 </Project>
