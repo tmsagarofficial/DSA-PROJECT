@@ -408,7 +408,7 @@ void table()
     printf("[6].Diabetes Checkup\n");
     printf("[7].Infection\n");
     printf("[8].Viral Fever\n");
-    printf("[9].Common Cold/Head ache\n");
+    printf("[9].Common Cold/HeadÂ ache\n");
 }
 
 void displayCalendar(int, int, int, int);
