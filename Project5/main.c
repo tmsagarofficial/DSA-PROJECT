@@ -1,4 +1,5 @@
 
+
 #pragma warning(disable:4996)
 #include<stdio.h>
 #include<malloc.h>
@@ -11,15 +12,16 @@
 
 //generic-stuff
 int bid = 1001;
-
+void bookAppointment();
 int authstat = 0;
-void table();//done
+int table();//done
 void display(struct node*);//done
 void waitprint(char []);//done
 char str1[100] = "Logging in............\n";
 int numAppointments = 0;
 int appointments[MAX_APPOINTMENTS];
 int appointmentCalendar[DAYS_IN_MONTH][TIME_SLOTS_PER_DAY];
+void payments();
 
 //staff
 void staffdisplay();
@@ -47,6 +49,7 @@ struct node
     char bloodgroup[3];
     int id;
     int priority;
+
     struct node* next;
 };
 
@@ -58,7 +61,7 @@ struct node* delete(struct node*);
 int main()
 {
     int ch;
-    system("COLOR A0");
+    
     label1:
     printf("\t\t\t-------------------------------\n");
     printf("\t\t\t\t\t\t\t\t\t\t\t\n");
@@ -72,14 +75,17 @@ int main()
     switch (ch)
     {
     case 1:
+        
         stafflogin();
         break;
 
     case 2:
+        
         citizenlogin();
         break;
 
     case 3:
+        
         doctorlogin();
             break;
     case 4:exit(0);
@@ -100,6 +106,7 @@ void stafflogin() {
     printf("STAFF-LOGIN-PAGE");
     if (slogin()) {
         waitprint(str1);
+        system("COLOR C0");
         staffdisplay();
     }
     else {
@@ -166,7 +173,7 @@ void staffdisplay()
         system("cls");
         break;
     case 4:
-        exit(0);
+        main();
         break;
     }
 }
@@ -179,6 +186,7 @@ void citizenlogin() {
     printf("CITIZEN-LOGIN-PAGE");
     if (clogin()) {
         waitprint(str1);
+        system("COLOR B0");
         citizendisplay();
     }
     else {
@@ -224,8 +232,7 @@ void citizendisplay()
     system("cls");
     printf("\t\t\t1.BOOK APPOINTMENT\n");
     printf("\t\t\t2.DELETE AN APPOINTMENT\n");
-    printf("\t\t\t3.DISPLAY ALL APPOINTMENTS\n");
-    printf("\t\t\t4.EXIT\n");
+    printf("\t\t\t3.EXIT\n");
     printf("\t\t\tEnter your choice:");
     scanf("%d", &option);
     switch (option)
@@ -240,13 +247,9 @@ void citizendisplay()
         getchar();
         system("cls");
         break;
+    
     case 3:
-        display(start);
-        getchar();
-        system("cls");
-        break;
-    case 4:
-        exit(0);
+        main();
         break;
     }
 }
@@ -255,9 +258,10 @@ void citizendisplay()
 //doctor
 void doctorlogin() {
     system("cls");
-    printf("DOCTOR-LOGIN-PAGE");
+    printf("\t\t\tDOCTOR-LOGIN-PAGE\n\n");
     if (dlogin()) {
         waitprint(str1);
+        system("COLOR 70");
         doctordisplay();
     }
     else {
@@ -329,27 +333,10 @@ struct node* insert(struct node* start)
     printf("Enter the blood group of Patient:");
     scanf(" %s", ptr->bloodgroup);
     printf("Your id no : %d",++bid);
-    table();
-    scanf("%d", &pri);
-    //ptr->name=name;
-    ptr->age = val2;
-    //ptr->address=address;
-    //ptr->phone = val4;
-    ptr->id = bid;
-    ptr->priority = pri;
-    if ((start == NULL) || pri < start->priority)
-    {
-        ptr->next = start;
-        start = ptr;
-    }
-    else
-    {
-        p = start;
-        while (p->next != NULL && p->next->priority <= pri)
-            p = p->next;
-        ptr->next = p->next;
-        p->next = ptr;
-    }
+    int dis;
+    dis= table();
+    bookAppointment();
+                                                                                                              
     return start;
 };
 
@@ -397,8 +384,9 @@ void display(struct node* start)
 }
 
 
-void table()
+int table()
 {
+    int n;
     printf("\nPlease Refer this Table for your symptom//disease!\n");
     printf("[1].Heart attack\n");
     printf("[2].Severe wound/Bleeding\n");
@@ -408,7 +396,8 @@ void table()
     printf("[6].Diabetes Checkup\n");
     printf("[7].Infection\n");
     printf("[8].Viral Fever\n");
-    printf("[9].Common Cold/HeadÂ ache\n");
+    printf("[9].Common Cold/Head ache\n");
+    scanf("%d", &n); return n;
 }
 
 void displayCalendar(int, int, int, int);
@@ -434,9 +423,9 @@ void bookAppointment()
 
     printf("Enter patient name: ");
     scanf("%s", patient);
-
+    labeld:
     printf("Choose Doctor: \n");
-    printf("1.Dr ABC\n2.Dr XYZ\n3.Dr AAA\n");
+    printf("1.Dr ABC\n2.Dr XYZ\n3.Dr AAA\n4.Go back");
     scanf("%d", &ch);
     switch (ch)
     {
@@ -455,7 +444,7 @@ void bookAppointment()
         label1b:
         printf("Enter appointment time (10-15): ");
         scanf("%d", &time);
-        if (date <= 10 && date >= 1)
+        if (time <= 15 && time >= 10)
             ;
         else
             goto label1b;
@@ -477,14 +466,23 @@ void bookAppointment()
         break;
 
     case 2:
-        printf("View Calender to check available solts:");
+        printf("View Calender to check available slots:");
         getch();
         displayCalendar(15, 30, 10, 20);
+        label2a:
         printf("Enter appointment date (15-30): ");
         scanf("%d", &date);
-
+        if (date <= 30 && date >= 15)
+            ;
+        else
+            goto label2a;
+        label2b:
         printf("Enter appointment time (10-20): ");
         scanf("%d", &time);
+        if (date <= 20 && date >= 10)
+            ;
+        else
+            goto label2b;
         char doctor1[] = "Dr XYZ";
         if (appointmentCalendar[date][time] == 1)
         {
@@ -503,14 +501,23 @@ void bookAppointment()
         break;
 
     case 3:
-        printf("View Calender to check available solts:");
+        printf("View Calender to check available slots:");
         getch();
         displayCalendar(1, 15, 10, 18);
+        label3a:
         printf("Enter appointment date (1-15): ");
         scanf("%d", &date);
-
+        if (date <= 15 && date >= 1)
+            ;
+        else
+            goto label3a;
+        label3b:
         printf("Enter appointment time (10-18): ");
         scanf("%d", &time);
+        if (date <= 18 && date >= 10)
+            ;
+        else
+            goto label3b;
         char doctor2[] = "Dr AAA";
         if (appointmentCalendar[date][time] == 1)
         {
@@ -527,6 +534,10 @@ void bookAppointment()
         fprintf(fp3, "%s, %d, %d:00\n", patient, date, time);
         fprintf(fp, "%s, %s, %d, %d:00\n", patient, doctor2, date, time);
         break;
+    case 4:
+        break;
+    default:printf("Enter valid choice :");
+        goto labeld;
     }
     fcloseall();
 }
@@ -534,18 +545,64 @@ void bookAppointment()
 
 void displayCalendar(int d, int days, int t, int time) {
     printf("Calendar:\n");
-    printf("Time/\nDate");
+    printf("       ");
     for (int i = d; i <= days; i++) {
-        printf("[%4d]\t", i);
+        printf("[%d]\t", i);
     }
     printf("\n");
     for (int i = t; i <= time; i++) {
-        printf("%4d:00\t", i);
+        printf("[%d:00]\t", i);
         for (int j = d; j <= days; j++) {
-            printf("%4d\t", appointmentCalendar[j][i]);
+            printf("%d\t", appointmentCalendar[j][i]);
         }
         printf("\n");
     }
     printf("\n");
 }
 
+//void payments() {
+//    int ch;
+//    printf("\n{1} Proceed to payment . {2} Exit from payment\n");
+//    scanf("%d",&ch);
+//    switch (ch) {
+//    case 1:
+//        printf(\n
+//            ##################################################################
+//            ##################################################################
+//            ####              ##        ##  ##  ##    ######              ####
+//            ####  ##########  ########    ##  ######    ####  ##########  ####
+//            ####  ##      ##  ####  ##  ##      ############  ##      ##  ####
+//            ####  ##      ##  ######    ########    ########  ##      ##  ####
+//            ####  ##      ##  ######      ##            ####  ##      ##  ####
+//            ####  ##########  ####  ##  ################  ##  ##########  ####
+//            ####              ##  ##  ##  ##  ##  ##  ##  ##              ####
+//            ####################    ####    ##    ####  ######################
+//            ####    ##    ##  ####  ####  ######    ########  ##########  ####
+//            ########      ##########  ####        ##    ##  ##    ##    ######
+//            ######  ##  ##    ##    ####  ####  ##    ##  ####    ##  ########
+//            ####  ##  ##  ######  ##########  ####  ####        ##  ####  ####
+//            ########      ##  ####    ##    ####  ####  ####    ########  ####
+//            ########    ############  ##    ##    ##########              ####
+//            ####      ####        ##  ####  ##  ##            ##  ##  ##  ####
+//            ######    ########  ##      ####  ##  ##    ######    ##  ##  ####
+//            ####  ##          ####    ##  ####  ######      ######  ##########
+//            ####  ##  ##########  ##  ##  ##    ####    ########  ##    ######
+//            ####          ##  ##  ####    ##    ######  ########    ####  ####
+//            ####    ######  ####      ####    ########  ####  ####    ########
+//            ####    ##  ##    ##  ##  ####    ##    ####                ######
+//            ####################      ####      ####  ##  ######    ##########
+//            ####              ####  ##  ##  ##    ####    ##  ##    ##########
+//            ####  ##########  ######  ##  ##              ######  ####  ######
+//            ####  ##      ##  ##  ##        ##    ####              ##########
+//            ####  ##      ##  ##  ##########      ##  ####  ############  ####
+//            ####  ##      ##  ####    ########  ##  ####    ##    ##      ####
+//            ####  ##########  ##  ##  ######  ##  ##  ######    ##    ##  ####
+//            ####              ##  ##      ############    ##  ##  ############
+//            ##################################################################
+//            ##################################################################");
+//            break;
+//
+//    case 2:return;
+//        break;
+//    }
+//}
