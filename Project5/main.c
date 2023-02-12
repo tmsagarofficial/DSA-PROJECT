@@ -18,10 +18,13 @@ int table();//done
 void display(struct node*);//done
 void waitprint(char []);//done
 char str1[100] = "Logging in............\n";
+char str2[100] = "Processing ...............\n";
 int numAppointments = 0;
 int appointments[MAX_APPOINTMENTS];
 int appointmentCalendar[DAYS_IN_MONTH][TIME_SLOTS_PER_DAY];
 void payments();
+void displayappointmentsd();
+void displayappointmentss();
 
 //staff
 void staffdisplay();
@@ -147,35 +150,51 @@ int slogin() {
 }
 void staffdisplay()
 {
+    labelmagic:
     int option;
     system("cls");
     printf("\t\t\t1.ADD A PATIENT\n");
-    printf("\t\t\t2.DELETE A RECORD\n");
-    printf("\t\t\t3.DISPLAY ALL APPOINTMENTS\n");
-    printf("\t\t\t4.EXIT\n");
+    printf("\t\t\t2.DELETE A PATIENT\n");
+    printf("\t\t\t3.DISPLAY ALL PATIENTS\n");
+    printf("\t\t\t4.DISPLAY ALL APPOINTMENTS\n");
+
+    printf("\t\t\t5.EXIT\n");
     printf("\t\t\tEnter your choice:");
+
     scanf("%d", &option);
     switch (option)
     {
     case 1:
         start = insert(start);
+        
         getchar();
         system("cls");
         break;
     case 2:
         start = delete(start);
+        
         getchar();
         system("cls");
         break;
     case 3:
         display(start);
+              
         getchar();
-        system("cls");
+        
+        
         break;
     case 4:
+        system("cls");
+        displayappointmentss();
+        _sleep(2000);
+        getchar();
+        
+        break;
+    case 5:
         main();
         break;
     }
+    goto labelmagic;
 }
 
 
@@ -231,24 +250,18 @@ void citizendisplay()
     int option;
     system("cls");
     printf("\t\t\t1.BOOK APPOINTMENT\n");
-    printf("\t\t\t2.DELETE AN APPOINTMENT\n");
-    printf("\t\t\t3.EXIT\n");
+    printf("\t\t\t2.EXIT\n");
     printf("\t\t\tEnter your choice:");
     scanf("%d", &option);
     switch (option)
     {
     case 1:
-        start = insert(start);
-        getchar();
-        system("cls");
-        break;
-    case 2:
-        start = delete(start);
+        bookAppointment();
         getchar();
         system("cls");
         break;
     
-    case 3:
+    case 2:
         main();
         break;
     }
@@ -302,7 +315,26 @@ int dlogin() {
     return authstat;
 }
 void doctordisplay() {
-
+    int option;
+    system("cls");
+    
+    printf("\t\t\tDOCTOR's MENU");
+    printf("\t\t\t1.CHECK APPOINTMENTs\n");
+    printf("\t\t\t2.EXIT\n");
+    printf("\t\t\tEnter your choice:");
+    scanf("%d", &option);
+    switch (option) {
+    case 1:
+        printf("Displaying upcoming appointments\n");
+        waitprint(str2);
+        displayappointmentsd();
+        getchar();
+        break;
+    case 2: main();
+        break;
+    default:main();
+    }
+    
 }
 
 //generic
@@ -333,10 +365,28 @@ struct node* insert(struct node* start)
     printf("Enter the blood group of Patient:");
     scanf(" %s", ptr->bloodgroup);
     printf("Your id no : %d",++bid);
+    printf("Enter your disease Number:");
     int dis;
-    dis= table();
-    bookAppointment();
-                                                                                                              
+    dis=table();
+    printf("\nEnter priority:");
+    scanf("%d", &pri);
+    //ptr->name=name;
+    ptr->age = val2;
+    //ptr->address=address;
+    ptr->priority = pri;
+    if ((start == NULL) || pri < start->priority)
+    {
+        ptr->next = start;
+        start = ptr;
+    }
+    else
+    {
+        p = start;
+        while (p->next != NULL && p->next->priority <= pri)
+            p = p->next;
+        ptr->next = p->next;
+        p->next = ptr;
+    }
     return start;
 };
 
@@ -365,17 +415,17 @@ void display(struct node* start)
     struct node* ptr;
     ptr = start;
     if (start == NULL)
-        printf("\nTHERE IS NO PATIENT");
+        printf("\nNO PATIENTS RECORDED...");
     else
     {
         printf("\nPriority wise appointments are:");
         while (ptr != NULL)
         {
-            printf("The name of patient is:%s\n", ptr->name);
-            printf("The age of patient is:%d\n", ptr->age);
-            printf("The address of patient is : %s\n", ptr->address);
-            printf("Phone Number:%d\n", ptr->phone);
-            printf("The blood group of patient is:%s\n", ptr->bloodgroup);
+            printf("Patient Name : %s\n", ptr->name);
+            printf("Age : %d\n", ptr->age);
+            printf("Address : %s\n", ptr->address);
+            printf("Phone Number : %d\n", ptr->phone);
+            printf("Blood group : %s\n", ptr->bloodgroup);
             printf("---------------------------------------------------\n");
             ptr = ptr->next;
         }
@@ -448,7 +498,8 @@ void bookAppointment()
             ;
         else
             goto label1b;
-        char doctor[] = "Dr ABC";
+
+        char doctor[] = "DrABC";
         if (appointmentCalendar[date ][time] == 1)
         {
             printf("Appointment for this slot is already booked\n");
@@ -462,7 +513,7 @@ void bookAppointment()
         }
         printf("Appointment booked successfully\n\n");
         fprintf(fp1, "%s, %d, %d:00\n", patient, date, time);
-        fprintf(fp, "%s, %s, %d, %d:00\n", patient, doctor, date, time);
+        fprintf(fp, "%s, %s, %d, %d:00\n", patient,doctor,date, time);
         break;
 
     case 2:
@@ -483,7 +534,7 @@ void bookAppointment()
             ;
         else
             goto label2b;
-        char doctor1[] = "Dr XYZ";
+        char doctor1[] = "DrXYZ";
         if (appointmentCalendar[date][time] == 1)
         {
             printf("Appointment for this slot is already booked\n");
@@ -518,7 +569,7 @@ void bookAppointment()
             ;
         else
             goto label3b;
-        char doctor2[] = "Dr AAA";
+        char doctor2[] = "DrAAA";
         if (appointmentCalendar[date][time] == 1)
         {
             printf("Appointment for this slot is already booked\n");
@@ -540,6 +591,7 @@ void bookAppointment()
         goto labeld;
     }
     fcloseall();
+    return main();
 }
 
 
@@ -558,6 +610,122 @@ void displayCalendar(int d, int days, int t, int time) {
         printf("\n");
     }
     printf("\n");
+}
+
+void displayappointmentss() {
+    FILE* fp = fopen("appointments.csv", "a+");
+    if (!fp)
+        printf("Can't open file\n");
+
+    else {
+       
+        char buffer[1024];
+
+        int row = 0;
+        int column = 0;
+
+        while (fgets(buffer,
+            1024, fp)) {
+            column = 0;
+            row++;
+
+            if (row == 1)
+                continue;
+
+            char* value = strtok(buffer, ", ");
+
+            while (value) {
+                // Column 1
+                if (column == 0) {
+                    printf("Patient :");
+                }
+
+                // Column 2
+                if (column == 1) {
+                    printf("\tDoctor :");
+                }
+
+                // Column 3
+                if (column == 2) {
+                    printf("\tDate :");
+                }
+
+                if (column == 3) {
+                    printf("\tTime :");
+                }
+
+                printf("%s", value);
+                value = strtok(NULL, ", ");
+                column++;
+            }
+
+            printf("\n");
+        }
+
+        // Close the file
+        fclose(fp);
+    }
+    
+
+}
+
+
+void displayappointmentsd() {
+    FILE* fp = fopen("dr_abc.csv", "a+");
+    if (!fp)
+        printf("Can't open file\n");
+
+    else {
+        // Here we have taken size of
+        // array 1024 you can modify it
+        char buffer[1024];
+
+        int row = 0;
+        int column = 0;
+        printf("\n\n");
+        while (fgets(buffer,
+            1024, fp)) {
+            column = 0;
+            row++;
+
+            // To avoid printing of column
+            // names in file can be changed
+            // according to need
+            if (row == 1)
+                continue;
+
+            // Splitting the data
+            char* value = strtok(buffer, ", ");
+
+            while (value) {
+                // Column 1
+                if (column == 0) {
+                    printf("Name :");
+                }
+
+                // Column 2
+                if (column == 1) {
+                    printf("\tDate :");
+                }
+
+                // Column 3
+                if (column == 2) {
+                    printf("\tTime :");
+                }
+
+                printf("%s", value);
+                value = strtok(NULL, ", ");
+                column++;
+            }
+
+            printf("\n");
+        }
+
+        // Close the file
+        fclose(fp);
+    }
+
+
 }
 
 //void payments() {

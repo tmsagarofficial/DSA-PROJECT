@@ -34,9 +34,6 @@
     </Text>
   </ItemGroup>
   <ItemGroup>
-    <None Include="appointments.csv">
-      <Filter>Source Files</Filter>
-    </None>
     <None Include="dr_abc.csv">
       <Filter>Source Files</Filter>
     </None>
@@ -44,6 +41,9 @@
       <Filter>Source Files</Filter>
     </None>
     <None Include="dr_aaa.csv">
+      <Filter>Source Files</Filter>
+    </None>
+    <None Include="appointments.csv">
       <Filter>Source Files</Filter>
     </None>
   </ItemGroup>

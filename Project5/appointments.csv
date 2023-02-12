@@ -1,6 +1,9 @@
-sagar, Dr XYZ, 0, 0:00
-sad, Dr XYZ, 20, 14:00
-1, Dr ABC, 21, 21:00
-3, Dr ABC, 1, 10:00
-saf, Dr ABC, 1, 12:00
-qw, Dr ABC, 5, 13:00
+NAME, DOCTOR, DATE, TIME
+vanesh, DrABC, 1, 10:00
+tmsagar, DrABC, 3, 14:00
+vinayshankar, DrABC, 4, 11:00
+sagar, DrABC, 5, 13:00
+pmk, DrABC, 6, 14:00
+charan, DrXYZ, 19, 19:00
+sagar, DrABC, 5, 12:00
+sathvik, DrABC, 7, 14:00
